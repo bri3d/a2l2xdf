@@ -7,6 +7,9 @@ from sys import argv
 from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
 
 BASE_OFFSET = 0xA0800000
+USE_CONSTANTS = (
+    False
+)  # Should we use "constants" / "scalars" in the XDF? They kind of aren't good at all...
 
 db = DB()
 # session = db.import_a2l(argv[1])
@@ -259,7 +262,7 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
         else:
             table_def["z"]["math"] = "X"
 
-        if len(axisDescriptions) == 0:
+        if len(axisDescriptions) == 0 and USE_CONSTANTS is True:
             table_def["constant"] = True
         if len(axisDescriptions) > 0:
             table_def["x"] = axis_ref_to_points(axisDescriptions[0])
