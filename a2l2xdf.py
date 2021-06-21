@@ -56,11 +56,8 @@ def xdf_root_with_configuration(title):
     return [root, xdfheader]
 
 
-def xdf_axis_with_table(table: Element, id, axis_def):
-    axis = SubElement(table, "XDFAXIS")
-    axis.set("uniqueid", "0x0")
-    axis.set("id", id)
-    embeddeddata = SubElement(axis, "EMBEDDEDDATA")
+def xdf_embeddeddata(element: Element, id, axis_def):
+    embeddeddata = SubElement(element, "EMBEDDEDDATA")
     embeddeddata.set("mmedtypeflags", "0x02" if id != "z" else "0x06")
     embeddeddata.set("mmedaddress", str(axis_def["address"]))
     embeddeddata.set("mmedelementsizebits", str(data_sizes[axis_def["dataSize"]] * 8))
@@ -73,6 +70,16 @@ def xdf_axis_with_table(table: Element, id, axis_def):
         )
     embeddeddata.set("mmedmajorstridebits", str(data_sizes[axis_def["dataSize"]] * 8))
     embeddeddata.set("mmedminorstridebits", "0")
+    return embeddeddata
+
+
+def xdf_axis_with_table(table: Element, id, axis_def):
+    axis = SubElement(table, "XDFAXIS")
+    axis.set("uniqueid", "0x0")
+    axis.set("id", id)
+
+    xdf_embeddeddata(axis, id, axis_def)
+
     indexcount = SubElement(axis, "indexcount")
     indexcount.text = str(axis_def["length"]) if "length" in axis_def else "1"
     min = SubElement(axis, "min")
@@ -103,6 +110,27 @@ def xdf_table_with_root(root: Element, table_def):
     categorymem = SubElement(table, "CATEGORYMEM")
     categorymem.set("index", "0")
     categorymem.set("category", str(table_def["category"] + 1))
+    return table
+
+
+def xdf_constant_with_root(root: Element, table_def):
+    table = SubElement(root, "XDFCONSTANT")
+    table.set("uniqueid", table_def["z"]["address"])
+    title = SubElement(table, "title")
+    title.text = table_def["title"]
+    description = SubElement(table, "description")
+    description.text = table_def["description"]
+    categorymem = SubElement(table, "CATEGORYMEM")
+    categorymem.set("index", "0")
+    categorymem.set("category", str(table_def["category"] + 1))
+
+    xdf_embeddeddata(table, "z", table_def["z"])
+
+    math = SubElement(table, "MATH")
+    math.set("equation", table_def["z"]["math"])
+    var = SubElement(math, "VAR")
+    var.set("id", "X")
+
     return table
 
 
@@ -188,12 +216,12 @@ root, xdfheader = xdf_root_with_configuration(argv[1])
 
 categories = []
 
-with open(argv[2]) as csvfile:
-    csvreader = csv.reader(csvfile)
+with open(argv[2], encoding="utf-8-sig") as csvfile:
+    csvreader = csv.DictReader(csvfile)
     for row in csvreader:
-        tablename = row[1]
-        if tablename == "Table Name":
-            continue
+        tablename = row["Table Name"]
+        category = row["Category"]
+
         characteristics = (
             session.query(model.Characteristic)
             .order_by(model.Characteristic.name)
@@ -208,7 +236,6 @@ with open(argv[2]) as csvfile:
         table_length = calc_map_size(c_data)
         axisDescriptions = c_data.axisDescriptions
 
-        category = row[0]
         if category not in categories:
             categories.append(category)
             index = categories.index(category)
@@ -232,6 +259,8 @@ with open(argv[2]) as csvfile:
         else:
             table_def["z"]["math"] = "X"
 
+        if len(axisDescriptions) == 0:
+            table_def["constant"] = True
         if len(axisDescriptions) > 0:
             table_def["x"] = axis_ref_to_points(axisDescriptions[0])
             table_def["z"]["length"] = table_def["x"]["length"]
@@ -239,18 +268,21 @@ with open(argv[2]) as csvfile:
             table_def["y"] = axis_ref_to_points(axisDescriptions[1])
             table_def["z"]["rows"] = table_def["y"]["length"]
 
-        table = xdf_table_with_root(root, table_def)
-
-        if "x" in table_def:
-            xdf_axis_with_table(table, "x", table_def["x"])
+        if "constant" in table_def:
+            constant = xdf_constant_with_root(root, table_def)
         else:
-            xdf_axis_with_table(table, "x", dummy_axis)
+            table = xdf_table_with_root(root, table_def)
 
-        if "y" in table_def:
-            xdf_axis_with_table(table, "y", table_def["y"])
-        else:
-            xdf_axis_with_table(table, "y", dummy_axis)
+            if "x" in table_def:
+                xdf_axis_with_table(table, "x", table_def["x"])
+            else:
+                xdf_axis_with_table(table, "x", dummy_axis)
 
-        xdf_axis_with_table(table, "z", table_def["z"])
+            if "y" in table_def:
+                xdf_axis_with_table(table, "y", table_def["y"])
+            else:
+                xdf_axis_with_table(table, "y", dummy_axis)
+
+            xdf_axis_with_table(table, "z", table_def["z"])
 
 ElementTree(root).write(f"{argv[1]}.xdf")
