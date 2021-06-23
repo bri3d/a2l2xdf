@@ -1,4 +1,4 @@
-﻿Category,Table Name
+﻿Category,Table Name,Generate X Axis,Generate Y Axis
 Airflow,ip_fac_put_sp_bol_atjs
 Airflow,ip_n_min_cap_l_diag
 Airflow,lc_put_sp_tol_ena_amp
@@ -41,7 +41,7 @@ Fuel,CWBKS4
 Fuel,PSKBKS
 Fuel,ip_lamb_tur_ohp_min
 Fuel,ip_fac_mff_ti_stnd_h_rng_mpi[0]
-Fuel,ip_ti_add_dly_mpi[0]
+Fuel,ip_ti_add_dly_mpi[0],True,
 Fuel,c_lamb_bas_cor_min
 Fuel,ip_lamb_dec_fl
 Fuel,ip_lamb_inc_fl
@@ -72,8 +72,6 @@ Fuel,ip_ti_add_dly_temp_cor_mpi
 Fuel,ip_lamb_bas_hpdi[0]
 Fuel,ip_lamb_fl_sp
 Fuel,ip_lamb_fl_sp_tia
-Fuel,ip_tqi_thd_mplh_opp_max[5]
-Fuel,ip_tqi_thd_mplh_opp_min[5]
 Fuel,c_mfp_max
 Fuel,ip_fac_ti_prs_mpi
 Impulse Combustion,lc_gs_tq_inc_imp_comb_ena
@@ -186,6 +184,8 @@ MPI,c_ti_thd_inh_diag_iv_mpi
 MPI,clf_iv_mpi_diag_inh_man[0]
 MPI,c_abc_ini_typ_IV_MPI_OC_0
 MPI,ip_iga_knk_mpi_thd
+MPI,ip_tqi_thd_mplh_opp_max[5]
+MPI,ip_tqi_thd_mplh_opp_min[5]
 Sensor,ip_prs_im_mes
 Sensor,ip_prs_up_thr_mes
 Spark,ip_dly_inc_ad_1_knk
@@ -369,4 +369,7 @@ Torque Request,ip_tq_pow_max_mt[2][1]
 Torque Request,ip_tq_pow_max_mt[3][0]
 Torque Request,ip_tq_pow_max_mt[3][1]
 Torque Request,ip_tq_pow_max_mt[4][0]
-Torque Request,ip_tq_pow_max_mt[4][1]
+Torque Request,ip_tq_pow_max_mt[4][1],True,True
+Boost Display,c_bop_max_disp
+Boost Display,c_bop_min_disp
+Boost Display,ip_fac_bop_max_disp

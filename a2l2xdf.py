@@ -1,5 +1,6 @@
 import csv
 import re
+import uuid
 
 from pya2l import DB, model
 from pya2l.api import inspect
@@ -75,6 +76,25 @@ def xdf_embeddeddata(element: Element, id, axis_def):
     embeddeddata.set("mmedminorstridebits", "0")
     return embeddeddata
 
+def fake_xdf_axis_with_size(table: Element, id, size):
+    axis = SubElement(table, "XDFAXIS")
+    axis.set("uniqueid", "0x0")
+    axis.set("id", id)
+    indexcount = SubElement(axis, "indexcount")
+    indexcount.text = str(size)
+    outputtype = SubElement(axis, "outputtype")
+    outputtype.text = "4"
+    dalink = SubElement(axis, "DALINK")
+    dalink.set("index", "0")
+    math = SubElement(axis, "MATH")
+    math.set("equation", "X")
+    var = SubElement(math, "VAR")
+    var.set("id", "X")
+    for label_index in range(size):
+        label = SubElement(axis, "LABEL")
+        label.set("index", str(label_index))
+        label.set("value", "-")
+    return axis
 
 def xdf_axis_with_table(table: Element, id, axis_def):
     axis = SubElement(table, "XDFAXIS")
@@ -136,6 +156,22 @@ def xdf_constant_with_root(root: Element, table_def):
 
     return table
 
+def xdf_table_from_axis(root: Element, table_def, axis_name):
+    table = SubElement(root, "XDFTABLE")
+    table.set("uniqueid", table_def[axis_name]["address"])
+    table.set("flags", "0x30")
+    title = SubElement(table, "title")
+    title.text = f'{table_def["title"]} : {axis_name} axis : {table_def[axis_name]["name"]}'
+    description = SubElement(table, "description")
+    description.text = table_def[axis_name]["name"]
+    categorymem = SubElement(table, "CATEGORYMEM")
+    categorymem.set("index", "0")
+    categorymem.set("category", str(table_def["category"] + 1))
+    fake_xdf_axis_with_size(table, "x", table_def[axis_name]["length"])
+    fake_xdf_axis_with_size(table, "y", 1)
+    xdf_axis_with_table(table, "z", table_def[axis_name])
+    return table
+
 
 def xdf_category(xdfheader: Element, category_name, category_index):
     category = SubElement(xdfheader, "CATEGORY")
@@ -161,26 +197,15 @@ def adjust_address(address):
 
 # A2L to "normal" conversion methods
 
-dummy_axis = {
-    "min": 1,
-    "max": 1,
-    "address": 0x0,
-    "units": "-",
-    "length": 1,
-    "dataSize": "UBYTE",
-    "math": "X",
-}
-
-
 def fix_degree(bad_string):
     return re.sub(
         "\uFFFD", "\u00B0", bad_string
     )  # Replace Unicode "unknown" with degree sign
 
 
-def axis_ref_to_points(axis_ref: inspect.AxisDescr):
-
+def axis_ref_to_dict(axis_ref: inspect.AxisDescr):
     axis_value = {
+        "name": axis_ref.axisPtsRef.name,
         "units": fix_degree(axis_ref.axisPtsRef.compuMethod.unit),
         "min": axis_ref.lowerLimit,
         "max": axis_ref.upperLimit,
@@ -265,10 +290,12 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
         if len(axisDescriptions) == 0 and USE_CONSTANTS is True:
             table_def["constant"] = True
         if len(axisDescriptions) > 0:
-            table_def["x"] = axis_ref_to_points(axisDescriptions[0])
+            table_def["x"] = axis_ref_to_dict(axisDescriptions[0])
             table_def["z"]["length"] = table_def["x"]["length"]
+            table_def["description"] += f'\nX: {table_def["x"]["name"]}'
         if len(axisDescriptions) > 1:
-            table_def["y"] = axis_ref_to_points(axisDescriptions[1])
+            table_def["y"] = axis_ref_to_dict(axisDescriptions[1])
+            table_def["description"] += f'\nY: {table_def["y"]["name"]}'
             table_def["z"]["rows"] = table_def["y"]["length"]
 
         if "constant" in table_def:
@@ -278,13 +305,17 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
             if "x" in table_def:
                 xdf_axis_with_table(table, "x", table_def["x"])
+                if row["Generate X Axis"] == "True":
+                    xdf_table_from_axis(root, table_def, "x")
             else:
-                xdf_axis_with_table(table, "x", dummy_axis)
+                fake_xdf_axis_with_size(table, "x", 1)
 
             if "y" in table_def:
                 xdf_axis_with_table(table, "y", table_def["y"])
+                if row["Generate Y Axis"] == "True":
+                    xdf_table_from_axis(root, table_def, "y")
             else:
-                xdf_axis_with_table(table, "y", dummy_axis)
+                fake_xdf_axis_with_size(table, "y", 1)
 
             xdf_axis_with_table(table, "z", table_def["z"])
 
