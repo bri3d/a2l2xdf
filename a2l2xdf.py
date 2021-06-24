@@ -295,7 +295,7 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
         table_def = {
             "title": c_data.longIdentifier,
-            "description": c_data.name,
+            "description": c_data.displayIdentifier,
             "category": category,
             "z": {
                 "min": c_data.lowerLimit,
