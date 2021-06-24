@@ -28,6 +28,15 @@ data_sizes = {
 
 # XDF Serialization methods
 
+categories = []
+
+
+def xdf_add_category(xdfheader, category):
+    if category not in categories:
+        categories.append(category)
+        index = categories.index(category)
+        xdf_category(xdfheader, category, index)
+
 
 def xdf_root_with_configuration(title):
     root = Element("XDFFORMAT")
@@ -76,6 +85,7 @@ def xdf_embeddeddata(element: Element, id, axis_def):
     embeddeddata.set("mmedminorstridebits", "0")
     return embeddeddata
 
+
 def fake_xdf_axis_with_size(table: Element, id, size):
     axis = SubElement(table, "XDFAXIS")
     axis.set("uniqueid", "0x0")
@@ -95,6 +105,7 @@ def fake_xdf_axis_with_size(table: Element, id, size):
         label.set("index", str(label_index))
         label.set("value", "-")
     return axis
+
 
 def xdf_axis_with_table(table: Element, id, axis_def):
     axis = SubElement(table, "XDFAXIS")
@@ -133,6 +144,10 @@ def xdf_table_with_root(root: Element, table_def):
     categorymem = SubElement(table, "CATEGORYMEM")
     categorymem.set("index", "0")
     categorymem.set("category", str(table_def["category"] + 1))
+    if "sub_category" in table_def:
+        categorymem = SubElement(table, "CATEGORYMEM")
+        categorymem.set("index", "1")
+        categorymem.set("category", str(table_def["sub_category"] + 1))
     return table
 
 
@@ -146,6 +161,10 @@ def xdf_constant_with_root(root: Element, table_def):
     categorymem = SubElement(table, "CATEGORYMEM")
     categorymem.set("index", "0")
     categorymem.set("category", str(table_def["category"] + 1))
+    if "sub_category" in table_def:
+        categorymem = SubElement(table, "CATEGORYMEM")
+        categorymem.set("index", "1")
+        categorymem.set("category", str(table_def["sub_category"] + 1))
 
     xdf_embeddeddata(table, "z", table_def["z"])
 
@@ -156,17 +175,23 @@ def xdf_constant_with_root(root: Element, table_def):
 
     return table
 
+
 def xdf_table_from_axis(root: Element, table_def, axis_name):
     table = SubElement(root, "XDFTABLE")
     table.set("uniqueid", table_def[axis_name]["address"])
     table.set("flags", "0x30")
     title = SubElement(table, "title")
-    title.text = f'{table_def["title"]} : {axis_name} axis : {table_def[axis_name]["name"]}'
+    title.text = (
+        f'{table_def["title"]} : {axis_name} axis : {table_def[axis_name]["name"]}'
+    )
     description = SubElement(table, "description")
     description.text = table_def[axis_name]["name"]
     categorymem = SubElement(table, "CATEGORYMEM")
     categorymem.set("index", "0")
     categorymem.set("category", str(table_def["category"] + 1))
+    categorymem = SubElement(table, "CATEGORYMEM")
+    categorymem.set("index", "1")
+    categorymem.set("category", str(categories.index("Axis") + 1))
     fake_xdf_axis_with_size(table, "x", table_def[axis_name]["length"])
     fake_xdf_axis_with_size(table, "y", 1)
     xdf_axis_with_table(table, "z", table_def[axis_name])
@@ -196,6 +221,7 @@ def adjust_address(address):
 
 
 # A2L to "normal" conversion methods
+
 
 def fix_degree(bad_string):
     return re.sub(
@@ -241,15 +267,14 @@ def coefficients_to_equation(coefficients):
 # Begin
 
 root, xdfheader = xdf_root_with_configuration(argv[1])
-
-categories = []
+xdf_add_category(xdfheader, "Axis")
 
 with open(argv[2], encoding="utf-8-sig") as csvfile:
     csvreader = csv.DictReader(csvfile)
     for row in csvreader:
         tablename = row["Table Name"]
         category = row["Category"]
-
+        sub_category = row["Sub Category"]
         characteristics = (
             session.query(model.Characteristic)
             .order_by(model.Characteristic.name)
@@ -264,10 +289,7 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
         table_length = calc_map_size(c_data)
         axisDescriptions = c_data.axisDescriptions
 
-        if category not in categories:
-            categories.append(category)
-            index = categories.index(category)
-            xdf_category(xdfheader, category, index)
+        xdf_add_category(xdfheader, category)
 
         table_def = {
             "title": c_data.longIdentifier,
@@ -281,6 +303,10 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
                 "units": fix_degree(c_data.compuMethod.unit),
             },
         }
+
+        if sub_category is not None and len(sub_category) > 0:
+            xdf_add_category(xdfheader, sub_category)
+            table_def["sub_category"] = categories.index(sub_category)
 
         if len(c_data.compuMethod.coeffs) > 0:
             table_def["z"]["math"] = coefficients_to_equation(c_data.compuMethod.coeffs)

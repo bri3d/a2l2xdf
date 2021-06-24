@@ -1,4 +1,4 @@
-﻿Category,Table Name,Generate X Axis,Generate Y Axis
+﻿Category,Table Name,Sub Category,Generate X Axis,Generate Y Axis
 Airflow,ip_fac_put_sp_bol_atjs
 Airflow,ip_n_min_cap_l_diag
 Airflow,lc_put_sp_tol_ena_amp
@@ -41,7 +41,7 @@ Fuel,CWBKS4
 Fuel,PSKBKS
 Fuel,ip_lamb_tur_ohp_min
 Fuel,ip_fac_mff_ti_stnd_h_rng_mpi[0]
-Fuel,ip_ti_add_dly_mpi[0],True,
+Fuel,ip_ti_add_dly_mpi[0],,True,
 Fuel,c_lamb_bas_cor_min
 Fuel,ip_lamb_dec_fl
 Fuel,ip_lamb_inc_fl
@@ -313,7 +313,7 @@ Torque,ip_maf_stk_sp_vvl_cam_l[1][1][0]
 Torque,ip_maf_stk_sp_vvl_cam_l[1][1][1]
 Torque,ip_maf_stk_sp_vvl_cam_l[1][2][0]
 Torque,ip_maf_stk_sp_vvl_cam_l[1][2][1]
-Torque,ip_tqi_ref_n_m_air_vvl_cam_h[0][0][0]
+Torque,ip_tqi_ref_n_m_air_vvl_cam_h[0][0][0],,True,True
 Torque,ip_tqi_ref_n_m_air_vvl_cam_h[0][0][1]
 Torque,ip_tqi_ref_n_m_air_vvl_cam_h[0][1][0]
 Torque,ip_tqi_ref_n_m_air_vvl_cam_h[0][1][1]
@@ -337,39 +337,39 @@ Torque,ip_tqi_ref_n_m_air_vvl_cam_l[1][1][0]
 Torque,ip_tqi_ref_n_m_air_vvl_cam_l[1][1][1]
 Torque,ip_tqi_ref_n_m_air_vvl_cam_l[1][2][0]
 Torque,ip_tqi_ref_n_m_air_vvl_cam_l[1][2][1]
-Torque Request,ip_fac_tq_req_driv_h_vs_mt
-Torque Request,ip_fac_tq_req_driv_l_vs_mt
-Torque Request,ip_fac_tq_req_driv_h_vs_dct
-Torque Request,ip_fac_tq_req_driv_h_vs_dct_s
-Torque Request,ip_fac_tq_req_driv_l_vs_dct
-Torque Request,ip_fac_tq_req_driv_l_vs_dct_s
+Torque Request,ip_fac_tq_req_driv_h_vs_mt,MT
+Torque Request,ip_fac_tq_req_driv_l_vs_mt,MT
+Torque Request,ip_fac_tq_req_driv_h_vs_dct,AT
+Torque Request,ip_fac_tq_req_driv_h_vs_dct_s,AT
+Torque Request,ip_fac_tq_req_driv_l_vs_dct,AT
+Torque Request,ip_fac_tq_req_driv_l_vs_dct_s,AT
 Torque Request,ip_tq_lgrd_pow_max_req_clu_dec
 Torque Request,ip_tq_lgrd_pow_max_req_clu_inc
-Torque Request,ip_tq_pow_max_at[0][0]
-Torque Request,ip_tq_pow_max_at[0][1]
-Torque Request,ip_tq_pow_max_at[0][2]
-Torque Request,ip_tq_pow_max_at[1][0]
-Torque Request,ip_tq_pow_max_at[1][1]
-Torque Request,ip_tq_pow_max_at[1][2]
-Torque Request,ip_tq_pow_max_at[2][0]
-Torque Request,ip_tq_pow_max_at[2][1]
-Torque Request,ip_tq_pow_max_at[2][2]
-Torque Request,ip_tq_pow_max_at[3][0]
-Torque Request,ip_tq_pow_max_at[3][1]
-Torque Request,ip_tq_pow_max_at[3][2]
-Torque Request,ip_tq_pow_max_at[4][0]
-Torque Request,ip_tq_pow_max_at[4][1]
-Torque Request,ip_tq_pow_max_at[4][2]
-Torque Request,ip_tq_pow_max_mt[0][0]
-Torque Request,ip_tq_pow_max_mt[0][1]
-Torque Request,ip_tq_pow_max_mt[1][0]
-Torque Request,ip_tq_pow_max_mt[1][1]
-Torque Request,ip_tq_pow_max_mt[2][0]
-Torque Request,ip_tq_pow_max_mt[2][1]
-Torque Request,ip_tq_pow_max_mt[3][0]
-Torque Request,ip_tq_pow_max_mt[3][1]
-Torque Request,ip_tq_pow_max_mt[4][0]
-Torque Request,ip_tq_pow_max_mt[4][1],True,True
+Torque Request,ip_tq_pow_max_at[0][0],AT
+Torque Request,ip_tq_pow_max_at[0][1],AT
+Torque Request,ip_tq_pow_max_at[0][2],AT
+Torque Request,ip_tq_pow_max_at[1][0],AT
+Torque Request,ip_tq_pow_max_at[1][1],AT
+Torque Request,ip_tq_pow_max_at[1][2],AT
+Torque Request,ip_tq_pow_max_at[2][0],AT
+Torque Request,ip_tq_pow_max_at[2][1],AT
+Torque Request,ip_tq_pow_max_at[2][2],AT
+Torque Request,ip_tq_pow_max_at[3][0],AT
+Torque Request,ip_tq_pow_max_at[3][1],AT
+Torque Request,ip_tq_pow_max_at[3][2],AT
+Torque Request,ip_tq_pow_max_at[4][0],AT
+Torque Request,ip_tq_pow_max_at[4][1],AT
+Torque Request,ip_tq_pow_max_at[4][2],AT
+Torque Request,ip_tq_pow_max_mt[0][0],MT
+Torque Request,ip_tq_pow_max_mt[0][1],MT
+Torque Request,ip_tq_pow_max_mt[1][0],MT
+Torque Request,ip_tq_pow_max_mt[1][1],MT
+Torque Request,ip_tq_pow_max_mt[2][0],MT
+Torque Request,ip_tq_pow_max_mt[2][1],MT
+Torque Request,ip_tq_pow_max_mt[3][0],MT
+Torque Request,ip_tq_pow_max_mt[3][1],MT
+Torque Request,ip_tq_pow_max_mt[4][0],MT
+Torque Request,ip_tq_pow_max_mt[4][1],MT,True,True
 Boost Display,c_bop_max_disp
 Boost Display,c_bop_min_disp
 Boost Display,ip_fac_bop_max_disp
