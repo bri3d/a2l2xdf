@@ -141,14 +141,20 @@ def xdf_table_with_root(root: Element, table_def):
     title.text = table_def["title"]
     description = SubElement(table, "description")
     description.text = table_def["description"]
-    categorymem = SubElement(table, "CATEGORYMEM")
-    categorymem.set("index", "0")
-    categorymem.set("category", str(table_def["category"] + 1))
+    table_categories = [table_def["category"]]
     if "sub_category" in table_def:
-        categorymem = SubElement(table, "CATEGORYMEM")
-        categorymem.set("index", "1")
-        categorymem.set("category", str(table_def["sub_category"] + 1))
+        table_categories.append(table_def["sub_category"])
+    xdf_add_table_categories(table, table_categories)
     return table
+
+
+def xdf_add_table_categories(table, table_categories):
+    index = 0
+    for category in table_categories:
+        categorymem = SubElement(table, "CATEGORYMEM")
+        categorymem.set("index", str(index))
+        categorymem.set("category", str(categories.index(category) + 1))
+        index += 1
 
 
 def xdf_constant_with_root(root: Element, table_def):
@@ -158,13 +164,10 @@ def xdf_constant_with_root(root: Element, table_def):
     title.text = table_def["title"]
     description = SubElement(table, "description")
     description.text = table_def["description"]
-    categorymem = SubElement(table, "CATEGORYMEM")
-    categorymem.set("index", "0")
-    categorymem.set("category", str(table_def["category"] + 1))
+    table_categories = [table_def["category"]]
     if "sub_category" in table_def:
-        categorymem = SubElement(table, "CATEGORYMEM")
-        categorymem.set("index", "1")
-        categorymem.set("category", str(table_def["sub_category"] + 1))
+        table_categories.append(table_def["sub_category"])
+    xdf_add_table_categories(table, table_categories)
 
     xdf_embeddeddata(table, "z", table_def["z"])
 
@@ -186,12 +189,11 @@ def xdf_table_from_axis(root: Element, table_def, axis_name):
     )
     description = SubElement(table, "description")
     description.text = table_def[axis_name]["name"]
-    categorymem = SubElement(table, "CATEGORYMEM")
-    categorymem.set("index", "0")
-    categorymem.set("category", str(table_def["category"] + 1))
-    categorymem = SubElement(table, "CATEGORYMEM")
-    categorymem.set("index", "1")
-    categorymem.set("category", str(categories.index("Axis") + 1))
+    table_categories = [table_def["category"]]
+    if "sub_category" in table_def:
+        table_categories.append(table_def["sub_category"])
+    table_categories.append("Axis")
+    xdf_add_table_categories(table, table_categories)
     fake_xdf_axis_with_size(table, "x", table_def[axis_name]["length"])
     fake_xdf_axis_with_size(table, "y", 1)
     xdf_axis_with_table(table, "z", table_def[axis_name])
@@ -294,7 +296,7 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
         table_def = {
             "title": c_data.longIdentifier,
             "description": c_data.name,
-            "category": categories.index(category),
+            "category": category,
             "z": {
                 "min": c_data.lowerLimit,
                 "max": c_data.upperLimit,
@@ -306,7 +308,7 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
         if sub_category is not None and len(sub_category) > 0:
             xdf_add_category(xdfheader, sub_category)
-            table_def["sub_category"] = categories.index(sub_category)
+            table_def["sub_category"] = sub_category
 
         if len(c_data.compuMethod.coeffs) > 0:
             table_def["z"]["math"] = coefficients_to_equation(c_data.compuMethod.coeffs)
