@@ -277,6 +277,7 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
         tablename = row["Table Name"]
         category = row["Category"]
         sub_category = row["Sub Category"]
+        custom_name = row["Custom Name"]
         characteristics = (
             session.query(model.Characteristic)
             .order_by(model.Characteristic.name)
@@ -305,6 +306,10 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
                 "units": fix_degree(c_data.compuMethod.unit),
             },
         }
+
+        if custom_name is not None and len(custom_name) > 0:
+            table_def["description"] += f'\nOriginal Name: {table_def["title"]}'
+            table_def["title"] = custom_name
 
         if sub_category is not None and len(sub_category) > 0:
             xdf_add_category(xdfheader, sub_category)

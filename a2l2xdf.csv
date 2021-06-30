@@ -1,4 +1,4 @@
-﻿Category,Table Name,Sub Category,Generate X Axis,Generate Y Axis
+﻿Category,Table Name,Sub Category,Generate X Axis,Generate Y Axis,Custom Name
 Airflow,ip_fac_put_sp_bol_atjs
 Airflow,ip_n_min_cap_l_diag
 Airflow,lc_put_sp_tol_ena_amp
@@ -35,10 +35,13 @@ Flex Fuel,c_fac_afu_ratio_man
 Flex Fuel,ip_mff_fac_afu
 Flex Fuel,ip_perc_ff_sens
 Flex Fuel,ip_temp_1_sens
-Fuel,KLPSKRMX
-Fuel,KLUBLEMX
-Fuel,CWBKS4
-Fuel,PSKBKS
+Fuel,KLPSKRMX,Closed Loop,,,Fuel Pressure Setpoint by Fuel Flow
+Fuel,KLUBLEMX,,,,Maximum Low Pressure Fuel Pump PWM by Voltage
+Fuel,CWBKS4,Closed Loop,,,Codeword 4 for Low Pressure Fuel Control. Bit 0 = switchbks closed-loop LPFP control
+Fuel,KLUBSTBKS,,,,Low Pressure Fuel Pump Startup Correction by Voltage
+Fuel,PSNHSLL,Closed Loop,,,Target Low Pressure Fuel Pressure at Hot Start
+Fuel,KLKFPSS,Closed Loop,,,Target Low Pressure Fuel Pressure at Hot Start depending on Engine Temperature
+Fuel,KFPSNS,Closed Loop,,,Blend factor for Low Pressure Fuel Pressure at Hot Start in Post Start Phase
 Fuel,ip_lamb_tur_ohp_min
 Fuel,ip_fac_mff_ti_stnd_h_rng_mpi[0]
 Fuel,ip_ti_add_dly_mpi[0],,True,
@@ -49,9 +52,9 @@ Fuel,c_tia_hys_lamb_fl_sp
 Fuel,c_tia_thd_lamb_fl_sp
 Fuel,c_tco_min_fl
 Fuel,ip_mff_iv_thd_mon
-Fuel,KFFLAF
-Fuel,KFFLAF4
-Fuel,KFNTBKS
+Fuel,KFFLAF,,,,Low Pressure Fuel Pump PWM for Pressure vs Flow
+Fuel,KFFLAF4,,,,Low Pressure Fuel Pump PWM 4WD for Pressure vs Flow
+Fuel,KFNTBKS,Closed Loop,,,Low Pressure Fuel Target Pressure for HDP Temperature and Speed
 Fuel,ip_lamb_cop_min
 Fuel,ip_lamb_ohp_ext
 Fuel,ip_fac_mff_bas_mplh[4]
@@ -373,3 +376,4 @@ Torque Request,ip_tq_pow_max_mt[4][1],MT,True,True
 Boost Display,c_bop_max_disp
 Boost Display,c_bop_min_disp
 Boost Display,ip_fac_bop_max_disp
+Ambient Pressure,ip_amp_mes
