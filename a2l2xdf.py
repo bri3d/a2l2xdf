@@ -2,6 +2,7 @@ import csv
 import re
 import uuid
 
+from os import path
 from pya2l import DB, model
 from pya2l.api import inspect
 from sys import argv
@@ -13,8 +14,9 @@ USE_CONSTANTS = (
 )  # Should we use "constants" / "scalars" in the XDF? They kind of aren't good at all...
 
 db = DB()
-# session = db.import_a2l(argv[1])
-session = db.open_existing(argv[1])
+session = (
+    db.open_existing(argv[1]) if path.exists(f"{argv[1]}db") else db.import_a2l(argv[1])
+)
 
 data_sizes = {
     "UWORD": 2,
