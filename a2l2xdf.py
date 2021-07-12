@@ -8,7 +8,6 @@ from pya2l.api import inspect
 from sys import argv
 from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
 
-BASE_OFFSET = 0xA0800000
 USE_CONSTANTS = (
     False
 )  # Should we use "constants" / "scalars" in the XDF? They kind of aren't good at all...
@@ -16,6 +15,13 @@ USE_CONSTANTS = (
 db = DB()
 session = (
     db.open_existing(argv[1]) if path.exists(f"{argv[1]}db") else db.import_a2l(argv[1])
+)
+
+BASE_OFFSET = (
+    session.query(model.MemorySegment)
+    .filter(model.MemorySegment.name == "_ROM")
+    .first()
+    .address
 )
 
 data_sizes = {
