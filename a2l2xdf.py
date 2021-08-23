@@ -8,9 +8,7 @@ from pya2l.api import inspect
 from sys import argv
 from xml.etree.ElementTree import Element, SubElement, Comment, ElementTree
 
-USE_CONSTANTS = (
-    False
-)  # Should we use "constants" / "scalars" in the XDF? They kind of aren't good at all...
+USE_CONSTANTS = False  # Should we use "constants" / "scalars" in the XDF? They kind of aren't good at all...
 
 db = DB()
 session = (
@@ -79,7 +77,11 @@ def xdf_root_with_configuration(title):
 
 def xdf_embeddeddata(element: Element, id, axis_def):
     embeddeddata = SubElement(element, "EMBEDDEDDATA")
-    embeddeddata.set("mmedtypeflags", "0x02" if id != "z" else "0x06")
+    mmedtypeflags = 0x02 if id != "z" else 0x06
+    if axis_def["dataSize"] == "FLOAT32_IEEE":
+        mmedtypeflags += 0x10000
+
+    embeddeddata.set("mmedtypeflags", hex(mmedtypeflags))
     embeddeddata.set("mmedaddress", str(axis_def["address"]))
     embeddeddata.set("mmedelementsizebits", str(data_sizes[axis_def["dataSize"]] * 8))
     embeddeddata.set(
