@@ -346,14 +346,14 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
             if "x" in table_def:
                 xdf_axis_with_table(table, "x", table_def["x"])
-                if row["Generate X Axis"] == "True":
+                if row["Generate X Axis"].lower() == "true":
                     xdf_table_from_axis(root, table_def, "x")
             else:
                 fake_xdf_axis_with_size(table, "x", 1)
 
             if "y" in table_def:
                 xdf_axis_with_table(table, "y", table_def["y"])
-                if row["Generate Y Axis"] == "True":
+                if row["Generate Y Axis"].lower() == "true":
                     xdf_table_from_axis(root, table_def, "y")
             else:
                 fake_xdf_axis_with_size(table, "y", 1)
