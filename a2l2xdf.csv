@@ -85,7 +85,7 @@ Impulse Combustion,Enable Conditions,id_imp_comb_act_state_cc,Clutch States That
 Impulse Combustion,Enable Conditions,c_conf_imp_comb_gs,Impuse Combustion Config During Gearshift (Bitmask),,
 Impulse Combustion,Enable Conditions,c_tq_req_dif_tra_min_imp_comb,Torque Difference to Enable Impulse Combustion,,
 Impulse Combustion,Enable Conditions,lc_imp_comb_puc_ena,Enable Impulse Combustion Ouside of Fuel Cutoff State,,
-Impulse Combustion,Duration,ip_t_max_pu_end_imp_comb,Max Time Allowed in Impulse Combustion,,
+Impulse Combustion,Duration,ip_t_max_pu_end_imp_comb,Max Time Allowed in Impulse Combustion,TRUE,
 Impulse Combustion,,c_tco_min_imp_comb,,,
 Impulse Combustion,,c_temp_cat_imp_comb_max,,,
 Impulse Combustion,,c_temp_cat_imp_comb_min,,,
@@ -496,14 +496,25 @@ Torque Model,Airflow to Torque - Port Flap Low,ip_tqi_ref_n_m_air_vvl_cam_l[1][1
 Torque Model,Airflow to Torque - Port Flap Low,ip_tqi_ref_n_m_air_vvl_cam_l[1][2][0],Airflow to Torque VVL 1 Intake 2 Exhaust 0,,
 Torque Model,Airflow to Torque - Port Flap Low,ip_tqi_ref_n_m_air_vvl_cam_l[1][2][1],Airflow to Torque VVL 1 Intake 2 Exhaust 1,,
 Torque Request,,ip_fac_tq_req_driv_rvg,Driver Pedal Torque Request (Reverse),TRUE,TRUE
-Toruqe Request,AT,ip_fac_tq_req_driv_l_vs_at,Driver Pedal Torque Request Low Speed (AT),TRUE,TRUE
-Toruqe Request,AT,ip_fac_tq_req_driv_h_vs_at,Driver Pedal Torque Request High Speed (AT),TRUE,TRUE
-Torque Request,AT,ip_fac_tq_req_driv_h_vs_at_s,Driver Pedal Torque Request (AT) (Sport),TRUE,TRUE
+Torque Request,,ip_fac_tq_req_driv_drof,Driver Pedal Torque Request During Driveoff,TRUE,TRUE
+Torque Request,,ip_fac_tq_req_driv_h_vs_ofrd,Driver Pedal Torque Request High Speed (Offroad),,
+Torque Request,,ip_fac_tq_req_driv_l_vs_ofrd,Driver Pedal Torque Request Low Speed (Offroad),,
+Torque Request,AT,ip_fac_slop_pv_ofrd,,TRUE,TRUE
+Torque Request,AT,ip_fac_slop_pv_at,,TRUE,TRUE
+Torque Request,AT,ip_fac_tq_req_driv_l_vs_at,Driver Pedal Torque Request Low Speed (AT),,
+Torque Request,AT,ip_fac_tq_req_driv_h_vs_at,Driver Pedal Torque Request High Speed (AT),TRUE,TRUE
+Torque Request,AT,ip_fac_tq_req_driv_h_vs_at_s,Driver Pedal Torque Request High Speed (AT) (Sport),TRUE,TRUE
+Torque Request,AT,ip_fac_tq_req_driv_l_vs_at_s,Driver Pedal Torque Request Low Speed (AT) (Sport),,
+Torque Request,AT,ip_fac_tq_req_driv_l_vs_cvt,Driver Pedal Torque Request Low Speed (CVT),TRUE,TRUE
+Torque Request,AT,ip_fac_tq_req_driv_h_vs_cvt,Driver Pedal Torque Request High Speed (CVT),,
+Torque Request,AT,ip_fac_tq_req_driv_l_vs_cvt_s,Driver Pedal Torque Request Low Speed (CVT) (Sport),,
+Torque Request,AT,ip_fac_tq_req_driv_h_vs_cvt_s,Driver Pedal Torque Request High Speed (CVT) (Sport),,
+Torque Request,AT,c_vs_thd_max_cvt,Vehical Speed for Low/High Speed Transition (CVT),,
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_dct,Driver Pedal Torque Request High Speed (DCT),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_dct_s,Driver Pedal Torque Request High Speed (DCT) (Sport),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_l_vs_dct,Driver Pedal Torque Request Low Speed (DCT),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_l_vs_dct_s,Driver Pedal Torque Request Low Speed (DCT) (Sport),TRUE,TRUE
-Toruqe Request,AT,c_vs_thd_max_dct,Vehical Speed for Low/High Speed Transition (DCT),,
+Torque Request,AT,c_vs_thd_max_dct,Vehical Speed for Low/High Speed Transition (DCT),,
 Torque Request,AT,ip_tq_pow_max_at[0][0],Maximum Torque at Clutch AT PC 0 Type 0,TRUE,TRUE
 Torque Request,AT,ip_tq_pow_max_at[0][1],Maximum Torque at Clutch AT PC 0 Type 1,,
 Torque Request,AT,ip_tq_pow_max_at[0][2],Maximum Torque at Clutch AT PC 0 Type 2,,
@@ -548,5 +559,5 @@ Turbocharger,Wastegate,ip_fac_kp_bpa_ctl_cor_pos_1,,,
 Turbocharger,,ip_fac_eff_cmpr,Turbo Compressor Efficiency,,
 Turbocharger,,ip_fac_put_sp_bol_atjs,Boost Pressure Launch Control,,
 Turbocharger,,ip_pq_cha_surge_dl,Turbo Compressor Surge Line,,
-Turbocharger,,c_n_tcha_max,Turbocharger Speed for Maximum Toruqe Management,,
+Turbocharger,,c_n_tcha_max,Turbocharger Speed for Maximum Torque  Management,,
 Turbocharger,,c_n_tcha_max_sp,Turbocharger Speed to Start Torque Mangement,,
