@@ -134,8 +134,8 @@ Limiter,Speed,DATA_LMVLim.LMVLim_vMax_vLim_C_VW.VehSpdl2NotAcv,,,
 Limiter,,c_m_air_cyl_sp_max,,,
 Limiter,,c_temp_cop_act_thd[0],,,
 Limiter,,c_temp_cop_act_thd[1],,,
-Turbocharger,,c_tia_thr_tcha_max,Compressor Outlet Temp for Maximum Torque Management,,
-Turbocharger,,c_tia_thr_tcha_max_sp,Compressor Outlet Temp to Start Torque Mangement,,
+Turbocharger,Torque Management,c_tia_thr_tcha_max,Compressor Outlet Temp for Maximum Torque Management,,
+Turbocharger,Torque Management,c_tia_thr_tcha_max_sp,Compressor Outlet Temp to Start Torque Mangement,,
 Limiter,,ip_m_air_cyl_max_stnd_vvl[0],,,
 Limiter,,ip_m_air_cyl_max_stnd_vvl[1],,,
 Airflow,,ip_prs_up_thr_dif_wide_open_thr,,,
@@ -496,14 +496,14 @@ Torque Model,Airflow to Torque - Port Flap Low,ip_tqi_ref_n_m_air_vvl_cam_l[1][1
 Torque Model,Airflow to Torque - Port Flap Low,ip_tqi_ref_n_m_air_vvl_cam_l[1][2][0],Airflow to Torque VVL 1 Intake 2 Exhaust 0,,
 Torque Model,Airflow to Torque - Port Flap Low,ip_tqi_ref_n_m_air_vvl_cam_l[1][2][1],Airflow to Torque VVL 1 Intake 2 Exhaust 1,,
 Torque Request,,ip_fac_tq_req_driv_rvg,Driver Pedal Torque Request (Reverse),TRUE,TRUE
-Toruqe Request,AT,ip_fac_tq_req_driv_l_vs_at,Driver Pedal Torque Request Low Speed (AT),TRUE,TRUE
-Toruqe Request,AT,ip_fac_tq_req_driv_h_vs_at,Driver Pedal Torque Request High Speed (AT),TRUE,TRUE
+Torque Request,AT,ip_fac_tq_req_driv_l_vs_at,Driver Pedal Torque Request Low Speed (AT),TRUE,TRUE
+Torque Request,AT,ip_fac_tq_req_driv_h_vs_at,Driver Pedal Torque Request High Speed (AT),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_at_s,Driver Pedal Torque Request (AT) (Sport),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_dct,Driver Pedal Torque Request High Speed (DCT),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_dct_s,Driver Pedal Torque Request High Speed (DCT) (Sport),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_l_vs_dct,Driver Pedal Torque Request Low Speed (DCT),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_l_vs_dct_s,Driver Pedal Torque Request Low Speed (DCT) (Sport),TRUE,TRUE
-Toruqe Request,AT,c_vs_thd_max_dct,Vehical Speed for Low/High Speed Transition (DCT),,
+Torque Request,AT,c_vs_thd_max_dct,Vehical Speed for Low/High Speed Transition (DCT),,
 Torque Request,AT,ip_tq_pow_max_at[0][0],Maximum Torque at Clutch AT PC 0 Type 0,TRUE,TRUE
 Torque Request,AT,ip_tq_pow_max_at[0][1],Maximum Torque at Clutch AT PC 0 Type 1,,
 Torque Request,AT,ip_tq_pow_max_at[0][2],Maximum Torque at Clutch AT PC 0 Type 2,,
@@ -537,7 +537,7 @@ Torque Request,MT,ip_tq_pow_max_mt[4][0],Maximum Torque at Clutch MT PC 4 Type 0
 Torque Request,MT,ip_tq_pow_max_mt[4][1],Maximum Torque at Clutch MT PC 4 Type 1,TRUE,TRUE
 Torque Request,,ip_tq_lgrd_pow_max_req_clu_dec,,,
 Torque Request,,ip_tq_lgrd_pow_max_req_clu_inc,,,
-Turbocharger,,ip_pq_cha_max,Turbo Max Pressure Ratio,TRUE,TRUE
+Turbocharger,Torque Management,ip_pq_cha_max,Turbo Max Pressure Ratio,TRUE,TRUE
 Turbocharger,Wastegate,ip_fac_bpa_sp_amp_ofs,,,
 Turbocharger,Wastegate,ip_fac_bpa_sp[0],Wastegate Position Feedforward VVL 0,,
 Turbocharger,Wastegate,ip_fac_bpa_sp[1],Wastegate Position Feedforward VVL 1,,
@@ -545,8 +545,17 @@ Turbocharger,Wastegate,ip_fac_kp_bpa_ctl_cor_neg,,,
 Turbocharger,Wastegate,ip_fac_kp_bpa_ctl_cor_neg_1,,,
 Turbocharger,Wastegate,ip_fac_kp_bpa_ctl_cor_pos,,,
 Turbocharger,Wastegate,ip_fac_kp_bpa_ctl_cor_pos_1,,,
-Turbocharger,,ip_fac_eff_cmpr,Turbo Compressor Efficiency,,
-Turbocharger,,ip_fac_put_sp_bol_atjs,Boost Pressure Launch Control,,
-Turbocharger,,ip_pq_cha_surge_dl,Turbo Compressor Surge Line,,
-Turbocharger,,c_n_tcha_max,Turbocharger Speed for Maximum Toruqe Management,,
-Turbocharger,,c_n_tcha_max_sp,Turbocharger Speed to Start Torque Mangement,,
+Turbocharger,Model - Compressor,ip_fac_eff_cmpr,Air Temperature Increase Factor,,
+Turbocharger,Torque Management,ip_fac_put_sp_bol_atjs,Boost Pressure Launch Control,,
+Turbocharger,Model - Compressor,ip_pq_cha_surge_dl,Turbo Compressor Surge Line,,
+Turbocharger,Model - Compressor,ip_pq_cha_surge_dl_hys_pl,Turbocharger Compressor Surge Line Hysteresis Part Load,,
+Turbocharger,Torque Management,c_n_tcha_max,Turbocharger Speed for Maximum Torque Management,,
+Turbocharger,Torque Management,c_n_tcha_max_sp,Turbocharger Speed to Start Torque Mangement,,
+Turbocharger,Model - Compressor,ip_fac_eff_cmpr_mdl,Compressor Efficiency,,
+Turbocharger,Model - Compressor,ip_n_tcha_stnd,Turbocharger Speed,,
+Turbocharger,Model - Turbine,ip_pq_tur_ref,Reference Turbine Pressure Ratio,,
+Turbocharger,Model - Turbine,ip_fac_pow_tur_ref,Reference Turbine Power Factor,,
+Turbocharger,Model - Turbine,ip_flow_tur_cor_pq_tur[0],Turbine Mass Flow VVL 0,,
+Turbocharger,Model - Turbine,ip_flow_tur_cor_pq_tur[1],Turbine Mass Flow VVL 1,,
+Turbocharger,Model - Turbine,ip_pq_tur_dif[0],Turbine Pressure Ratio VVL 0,,
+Turbocharger,Model - Turbine,ip_pq_tur_dif[1],Turbine Pressure Ratio VVL 1,,
