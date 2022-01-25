@@ -509,14 +509,14 @@ Torque Request,AT,ip_fac_tq_req_driv_l_vs_cvt,Driver Pedal Torque Request Low Sp
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_cvt,Driver Pedal Torque Request High Speed (CVT),,
 Torque Request,AT,ip_fac_tq_req_driv_l_vs_cvt_s,Driver Pedal Torque Request Low Speed (CVT) (Sport),,
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_cvt_s,Driver Pedal Torque Request High Speed (CVT) (Sport),,
-,,c_vs_thd_min_cvt,Vehical Speed for Low Speed Pedal Table (CVT),,
-Torque Request,AT,c_vs_thd_max_cvt,Vehical Speed for High Speed Pedal Table (CVT),,
+,,c_vs_thd_min_cvt,Vehicle Speed for Low Speed Pedal Table (CVT),,
+Torque Request,AT,c_vs_thd_max_cvt,Vehicle Speed for High Speed Pedal Table (CVT),,
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_dct,Driver Pedal Torque Request High Speed (DCT),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_h_vs_dct_s,Driver Pedal Torque Request High Speed (DCT) (Sport),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_l_vs_dct,Driver Pedal Torque Request Low Speed (DCT),TRUE,TRUE
 Torque Request,AT,ip_fac_tq_req_driv_l_vs_dct_s,Driver Pedal Torque Request Low Speed (DCT) (Sport),TRUE,TRUE
-Torque Request,AT,c_vs_thd_min_dct,Vehical Speed for Low Speed Pedal Table (DCT),,
-Torque Request,AT,c_vs_thd_max_dct,Vehical Speed for High Speed Pedal Table (DCT),,
+Torque Request,AT,c_vs_thd_min_dct,Vehicle Speed for Low Speed Pedal Table (DCT),,
+Torque Request,AT,c_vs_thd_max_dct,Vehicle Speed for High Speed Pedal Table (DCT),,
 Torque Request,AT,ip_tq_pow_max_at[0][0],Maximum Torque at Clutch AT PC 0 Type 0,TRUE,TRUE
 Torque Request,AT,ip_tq_pow_max_at[0][1],Maximum Torque at Clutch AT PC 0 Type 1,,
 Torque Request,AT,ip_tq_pow_max_at[0][2],Maximum Torque at Clutch AT PC 0 Type 2,,
@@ -536,7 +536,7 @@ Torque Request,MT,ip_fac_tq_req_driv_l_ofrd_mt,Driver Pedal Torque Request Low S
 Torque Request,MT,ip_fac_tq_req_driv_h_ofrd_mt,Driver Pedal Torque Request High Speed (MT) (Offroad),TRUE,TRUE
 Torque Request,MT,ip_fac_tq_req_driv_h_vs_mt,Driver Pedal Torque Request High Speed (MT),TRUE,TRUE
 Torque Request,MT,ip_fac_tq_req_driv_l_vs_mt,Driver Pedal Torque Request Low Speed (MT),TRUE,TRUE
-Torque Request,MT,c_vs_thd_max_mt,Vehical Speed for Low/High Speed Transition (MT),,
+Torque Request,MT,c_vs_thd_max_mt,Vehicle Speed for Low/High Speed Transition (MT),,
 Torque Request,MT,ip_fac_tq_req_driv_spt_mt,Driver Demand Modifier for Sport Mode (MT),,
 Torque Request,MT,ip_tq_pow_max_mt[0][0],Maximum Torque at Clutch MT PC 0 Type 0,,
 Torque Request,MT,ip_tq_pow_max_mt[0][1],Maximum Torque at Clutch MT PC 0 Type 1,,
