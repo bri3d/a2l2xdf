@@ -32,6 +32,10 @@ data_sizes = {
     "FLOAT32_IEEE": 4,
 }
 
+axis_in_xdf = {
+    "address": False,
+    }
+
 # XDF Serialization methods
 
 categories = []
@@ -68,7 +72,7 @@ def xdf_root_with_configuration(title):
     region = SubElement(xdfheader, "REGION")
     region.set("type", "0xFFFFFFFF")
     region.set("startaddress", "0x0")
-    region.set("size", "0x7D000")
+    region.set("size", "0x400000")
     region.set("regionflags", "0x0")
     region.set("name", "Binary")
     region.set("desc", "BIN for the XDF")
@@ -133,7 +137,8 @@ def xdf_axis_with_table(table: Element, id, axis_def):
     units = SubElement(axis, "units")
     units.text = axis_def["units"]
     embedinfo = SubElement(axis, "embedinfo")
-    embedinfo.set("type", "1")  # "Pure, Internal"
+    embedinfo.set("type", "3")  # "Linked, Scale"
+    embedinfo.set("linkobjid", str(axis_def["address"]))
     dalink = SubElement(axis, "DALINK")
     dalink.set("index", "0")
     math = SubElement(axis, "MATH")
@@ -153,7 +158,9 @@ def xdf_table_with_root(root: Element, table_def):
     description.text = table_def["description"]
     table_categories = [table_def["category"]]
     if "sub_category" in table_def:
-        table_categories.append(table_def["sub_category"])
+        table_categories.append(table_def["sub_category"])       
+    if "subsub_category" in table_def:
+        table_categories.append(table_def["subsub_category"])            
     xdf_add_table_categories(table, table_categories)
     return table
 
@@ -177,6 +184,8 @@ def xdf_constant_with_root(root: Element, table_def):
     table_categories = [table_def["category"]]
     if "sub_category" in table_def:
         table_categories.append(table_def["sub_category"])
+    if "subsub_category" in table_def:
+        table_categories.append(table_def["subsub_category"])
     xdf_add_table_categories(table, table_categories)
 
     xdf_embeddeddata(table, "z", table_def["z"])
@@ -199,10 +208,14 @@ def xdf_table_from_axis(root: Element, table_def, axis_name):
     )
     description = SubElement(table, "description")
     description.text = table_def[axis_name]["name"]
-    table_categories = [table_def["category"]]
-    if "sub_category" in table_def:
-        table_categories.append(table_def["sub_category"])
-    table_categories.append("Axis")
+    
+    table_categories = ["Axis"]
+    
+    # table_categories = [table_def["category"]]
+    # if "sub_category" in table_def:
+        # table_categories.append(table_def["sub_category"])
+    # table_categories.append("Axis")
+    
     xdf_add_table_categories(table, table_categories)
     fake_xdf_axis_with_size(table, "x", table_def[axis_name]["length"])
     fake_xdf_axis_with_size(table, "y", 1)
@@ -282,11 +295,13 @@ root, xdfheader = xdf_root_with_configuration(argv[1])
 xdf_add_category(xdfheader, "Axis")
 
 with open(argv[2], encoding="utf-8-sig") as csvfile:
+    print("Enhance...")
     csvreader = csv.DictReader(csvfile)
     for row in csvreader:
         tablename = row["Table Name"]
-        category = row["Category"]
-        sub_category = row["Sub Category"]
+        category = row["Category 1"]
+        sub_category = row["Category 2"]
+        subsub_category = row["Category 3"]
         custom_name = row["Custom Name"]
         characteristics = (
             session.query(model.Characteristic)
@@ -325,6 +340,10 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
             xdf_add_category(xdfheader, sub_category)
             table_def["sub_category"] = sub_category
 
+        if subsub_category is not None and len(subsub_category) > 0:
+            xdf_add_category(xdfheader, subsub_category)
+            table_def["subsub_category"] = subsub_category
+
         if len(c_data.compuMethod.coeffs) > 0:
             table_def["z"]["math"] = coefficients_to_equation(c_data.compuMethod.coeffs)
         else:
@@ -332,10 +351,12 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
         if len(axisDescriptions) == 0 and USE_CONSTANTS is True:
             table_def["constant"] = True
+        
         if len(axisDescriptions) > 0:
             table_def["x"] = axis_ref_to_dict(axisDescriptions[0])
             table_def["z"]["length"] = table_def["x"]["length"]
             table_def["description"] += f'\nX: {table_def["x"]["name"]}'
+        
         if len(axisDescriptions) > 1:
             table_def["y"] = axis_ref_to_dict(axisDescriptions[1])
             table_def["description"] += f'\nY: {table_def["y"]["name"]}'
@@ -348,14 +369,33 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
             if "x" in table_def:
                 xdf_axis_with_table(table, "x", table_def["x"])
-                if row["Generate X Axis"].lower() == "true":
+                #if row["Generate X Axis"].lower() == "true":
+                
+                duplicate = 0
+                check_address = table_def["x"]["address"]
+                while check_address in axis_in_xdf:
+                    duplicate += 1
+                    check_address += " "
+                    
+                axis_in_xdf[check_address] = True
+                if check_address == table_def["x"]["address"]:
                     xdf_table_from_axis(root, table_def, "x")
             else:
                 fake_xdf_axis_with_size(table, "x", 1)
 
             if "y" in table_def:
                 xdf_axis_with_table(table, "y", table_def["y"])
-                if row["Generate Y Axis"].lower() == "true":
+                #if row["Generate Y Axis"].lower() == "true":
+                                
+                duplicate = 0
+                check_address = table_def["y"]["address"]
+                while check_address in axis_in_xdf:
+                    duplicate += 1
+                    check_address += " "
+                    
+                axis_in_xdf[check_address] = True
+                if check_address == table_def["y"]["address"]:
+                
                     xdf_table_from_axis(root, table_def, "y")
             else:
                 fake_xdf_axis_with_size(table, "y", 1)
