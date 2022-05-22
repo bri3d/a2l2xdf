@@ -402,4 +402,4 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
             xdf_axis_with_table(table, "z", table_def["z"])
 
-ElementTree(root).write(f"{argv[2]}.xdf")
+ElementTree(root).write(f"{argv[1]}.xdf")
