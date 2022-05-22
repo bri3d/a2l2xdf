@@ -277,4 +277,4 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
         table = xml_table_with_root(xmlheader, table_def)
 
-ElementTree(root).write(f"{argv[1]}.CAL.xml")
+ElementTree(root).write(f"{argv[1]}.xml")
