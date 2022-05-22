@@ -344,10 +344,10 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
             xdf_add_category(xdfheader, subsub_category)
             table_def["subsub_category"] = subsub_category
 
-        if len(c_data.compuMethod.coeffs) > 0:
-            table_def["z"]["math"] = coefficients_to_equation(c_data.compuMethod.coeffs)
-        else:
+        if len(c_data.compuMethod.coeffs) == 0 or table_def["z"]["dataSize"] == "FLOAT32_IEEE":
             table_def["z"]["math"] = "X"
+        else:
+            table_def["z"]["math"] = coefficients_to_equation(c_data.compuMethod.coeffs)
 
         if len(axisDescriptions) == 0 and USE_CONSTANTS is True:
             table_def["constant"] = True
@@ -402,4 +402,4 @@ with open(argv[2], encoding="utf-8-sig") as csvfile:
 
             xdf_axis_with_table(table, "z", table_def["z"])
 
-ElementTree(root).write(f"{argv[1]}.xdf")
+ElementTree(root).write(f"{argv[2]}.xdf")
